@@ -10,10 +10,10 @@ jobs:
     steps:
  
     - name: Checkout repository
-      uses: C:\actions/checkout@v4
+      uses: actions/checkout@v4
  
     - name: Create artifact folder
-      run: mkdir artifact
+      run: mkdir C:\artifact
  
     - name: Download artifact from JFrog with authentication
       run: |
@@ -30,8 +30,8 @@ jobs:
    
     - name: Extract artifact
       run: |
-        Expand-Archive -Path "artifact/app.zip" -DestinationPath "C:\artifact"
+        Expand-Archive -Path "C:\artifact/app.zip" -DestinationPath "C:\artifact"
  
     - name: Show extracted files
-      run: dir artifact
+      run: dir C:\artifact
  
