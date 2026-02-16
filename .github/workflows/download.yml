@@ -15,10 +15,19 @@ jobs:
     - name: Create artifact folder
       run: mkdir artifact
  
-    - name: Download artifact from JFrog
+    - name: Download artifact from JFrog with authentication
       run: |
-        Invoke-WebRequest -Uri "https://tr1.jfrog.io/artifactory/generic-local/CTT/GST/gosystemapicore/develop/2024.05.22.22.zip" -OutFile "artifact/app.zip"
- 
+        $username = "${{ secrets.JFROG_USERNAME }}"
+        $password = "${{ secrets.JFROG_PASSWORD }}"
+        $pair = "$username`:$password"
+        $encoded = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair))
+        $headers = @{ Authorization = "Basic $encoded" }
+     
+        Invoke-WebRequest `
+          -Uri "https://tr1.jfrog.io/artifactory/generic-local/CTT/GST/gosystemapicore/develop/2024.05.22.22.zip" `
+          -Headers $headers `
+          -OutFile "artifact/app.zip"
+   
     - name: Extract artifact
       run: |
         Expand-Archive -Path "artifact/app.zip" -DestinationPath "artifact"
