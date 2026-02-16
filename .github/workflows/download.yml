@@ -1,0 +1,28 @@
+name: Download Artifact from JFrog
+ 
+on:
+  workflow_dispatch:
+ 
+jobs:
+  download:
+    runs-on: windows-latest
+ 
+    steps:
+ 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+ 
+    - name: Create artifact folder
+      run: mkdir artifact
+ 
+    - name: Download artifact from JFrog
+      run: |
+        Invoke-WebRequest -Uri "https://tr1.jfrog.io/artifactory/generic-local/CTT/GST/gosystemapicore/develop/2024.05.22.22.zip" -OutFile "artifact/app.zip"
+ 
+    - name: Extract artifact
+      run: |
+        Expand-Archive -Path "artifact/app.zip" -DestinationPath "artifact"
+ 
+    - name: Show extracted files
+      run: dir artifact
+ 
